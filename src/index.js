@@ -8,13 +8,8 @@ function refreshWeather(response) {
   let timeElement = document.querySelector("#time");
   let date = new Date(response.data.time * 1000);
   let iconElement = document.querySelector("#icon");
-  
 
-
-
-console.log(response.data.condition.description);
-
-
+  console.log(response.data.condition.description);
 
   cityElement.innerHTML = response.data.city;
   descriptionElement.innerHTML = response.data.condition.description;
@@ -26,27 +21,30 @@ console.log(response.data.condition.description);
 }
 
 function formatDate(date) {
+  let minutes = date.getMinutes();
+  let hours = date.getHours();
+  let days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
 
- let minutes = date.getMinutes();
- let hours = date.getHours();
- let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  let day = days[date.getDay()];
 
- let day = days[date.getDay()];
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
 
- if (minutes < 10) {
-  minutes = `0${minutes}`;
- }
+  if (hours < 10) {
+    hours = `0${hours}`;
+  }
 
- if (hours < 10) {
-  hours = `0${hours}`;
- }
- 
- return `${day} ${hours}:${minutes}`;
+  return `${day} ${hours}:${minutes}`;
 }
-
-
-
-
 
 function searchCity(city) {
   let apiKey = "7601b0fff0179o9d5059a8db34ctbc66";
@@ -65,3 +63,32 @@ let searchFormElement = document.querySelector("#search-form");
 searchFormElement.addEventListener("submit", handleSearchSubmit);
 
 searchCity("Nairobi");
+
+//
+function displayForecast() {
+  let forecastElement = document.querySelector("#forecast");
+
+  let days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+  let forecastHTML = "";
+
+  days.forEach(function (day) {
+    forecastHTML =
+      forecastHTML +
+      `
+    <div class="weather-forecast-day">
+       <div class="weather-forecast-date">${day}</div>
+       <div class="weather-forecast-icon"> ☁️</div>
+       <div class="weather-forecast-temperatures">
+           <div class="weather-forecast-temperature">
+               <strong>35°C</strong> 
+           </div>
+           <div class="weather-forecast-temperature">9°C</div>
+       </div>
+   </div>
+   `;
+  });
+
+  forecastElement.innerHTML = forecastHTML;
+}
+
+displayForecast();
